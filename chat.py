@@ -8,7 +8,7 @@ import pickle
 # Initiate App
 root = customtkinter.CTk()
 root.title("ChatGPT Bot")
-root.geometry('600x750')
+root.geometry('600x600')
 root.iconbitmap('ai_lt.ico')
 
 # Set Color Scheme
@@ -23,25 +23,69 @@ def speak():
 
 # Clear the Screen
 def clear():
-    pass
+    # Clear the Main Text Box
+    my_text.delete(1.0, END)
+    
+    # Clear query entry widget
+    chat_entry.delete(0, END)
+    
 
 
 # Do API Stuff
 def key():
+    # Define our filename
+    filename = "api_key"
+    
+    try:
+        if os.path.isfile(filename):
+            # Open the file
+            input_file = open(filename, 'rb')
+            
+            # Load the data from the file into a variable
+            stuff = pickle.load(input_file)
+            
+            # Output stuff to our entry box
+            api_entry.insert(END, stuff)
+        else:
+            # Create the file
+            input_file = open(filename, 'wb')
+        
+            # Close the file
+            input_file.close()
+    
+    except Exception as e:
+        my_text.insert(END, f"\n\n There was an error\n\n{e}")
+    
     # Resize app
     root.geometry('600x750')
     
     # Reshow API Frame
     api_frame.pack(pady=30)
-
+        
 
 # Do save API
 def save_key():
-    # Hide API frame
-    api_frame.pack_forget()
+    # Define our filename
+    filename = "api_key"
     
-    # Resize API frame
-    root.geometry('600x600')
+    try:
+        # Open file
+        output_file = open(filename, 'wb')
+        
+        # Actually add the data to the file
+        pickle.dump(api_entry.get(), output_file)
+        
+        # Delete entry box
+        api_entry.delete(0, END)
+        
+        # Hide API frame
+        api_frame.pack_forget()
+        
+        # Resize API frame
+        root.geometry('600x600')
+        
+    except Exception as e:
+        my_text.insert(END, f"\n\n There was an error\n\n{e}")
 
 
 # Create Text Frame
