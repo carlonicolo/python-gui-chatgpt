@@ -36,7 +36,18 @@ def speak():
                 # Create an instance
                 openai.Model.list()
                 
+                response = openai.Completion.create(
+                    model="text-davinci-003",
+                    prompt=chat_entry.get(),
+                    temperature=0,
+                    max_tokens=60,
+                    top_p=1.0,
+                    frequency_penalty=0.0,
+                    presence_penalty=0.0
+                )
                 
+                my_text.insert(END, (response['choices'][0]["text"]))
+                my_text.insert(END, "\n\n")
                 
                 
             else:
