@@ -18,7 +18,42 @@ customtkinter.set_default_color_theme("dark-blue")
 
 # Submit to ChatGPT
 def speak():
-    pass
+    if chat_entry.get():
+        filename = "api_key"
+    
+        try:
+            if os.path.isfile(filename):
+                # Open the file
+                input_file = open(filename, 'rb')
+                
+                # Load the data from the file into a variable
+                stuff = pickle.load(input_file)
+                
+                # Query chatGPT
+                # Define our API Key to ChatGPT
+                openai.api_key = stuff
+                
+                # Create an instance
+                openai.Model.list()
+                
+                
+                
+                
+            else:
+                # Create the file
+                input_file = open(filename, 'wb')
+            
+                # Close the file
+                input_file.close()
+                
+                # Error message - you need an api key
+                my_text.insert(END, "\n\nYou need an API key to talk with ChatGPT.\n. Get one here:\nhttps://beta.openai.com/account/api-keys")
+        
+        except Exception as e:
+            my_text.insert(END, f"\n\n There was an error\n\n{e}")
+            
+    else:
+        my_text.insert(END, "\n\nHey! You forgot to type anything!")
 
 
 # Clear the Screen
